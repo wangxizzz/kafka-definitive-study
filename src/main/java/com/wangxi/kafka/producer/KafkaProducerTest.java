@@ -54,7 +54,7 @@ public class KafkaProducerTest {
         InputStream inputStream = classLoader.getResourceAsStream("kafkaproducer.properties");
         try {
             properties.load(inputStream);
-            producer = new KafkaProducer<String, String>(properties);
+            producer = new KafkaProducer<>(properties);
         } catch (IOException e) {
             e.printStackTrace();
         }
