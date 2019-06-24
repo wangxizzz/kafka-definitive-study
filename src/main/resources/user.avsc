@@ -1,5 +1,5 @@
 {
-  "namespace":"com.jxl.avro",
+  "namespace":"com.wangxi.avro",
   "type":"record",
   "name":"User",
   "fields":[

@@ -3,11 +3,11 @@
  * 
  * DO NOT EDIT DIRECTLY
  */
-package com.jxl.avro;  
+package com.wangxi.avro;
 @SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class User extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"User\",\"namespace\":\"com.jxl.avro\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"age\",\"type\":[\"int\",\"null\"]},{\"name\":\"sex\",\"type\":[\"string\",\"null\"]}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"User\",\"namespace\":\"com.wangxi.avro\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"age\",\"type\":[\"int\",\"null\"]},{\"name\":\"sex\",\"type\":[\"string\",\"null\"]}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
   @Deprecated public java.lang.CharSequence name;
   @Deprecated public java.lang.Integer age;
@@ -96,18 +96,18 @@ public class User extends org.apache.avro.specific.SpecificRecordBase implements
   }
 
   /** Creates a new User RecordBuilder */
-  public static com.jxl.avro.User.Builder newBuilder() {
-    return new com.jxl.avro.User.Builder();
+  public static com.wangxi.avro.User.Builder newBuilder() {
+    return new com.wangxi.avro.User.Builder();
   }
   
   /** Creates a new User RecordBuilder by copying an existing Builder */
-  public static com.jxl.avro.User.Builder newBuilder(com.jxl.avro.User.Builder other) {
-    return new com.jxl.avro.User.Builder(other);
+  public static com.wangxi.avro.User.Builder newBuilder(com.wangxi.avro.User.Builder other) {
+    return new com.wangxi.avro.User.Builder(other);
   }
   
   /** Creates a new User RecordBuilder by copying an existing User instance */
-  public static com.jxl.avro.User.Builder newBuilder(com.jxl.avro.User other) {
-    return new com.jxl.avro.User.Builder(other);
+  public static com.wangxi.avro.User.Builder newBuilder(com.wangxi.avro.User other) {
+    return new com.wangxi.avro.User.Builder(other);
   }
   
   /**
@@ -122,11 +122,11 @@ public class User extends org.apache.avro.specific.SpecificRecordBase implements
 
     /** Creates a new Builder */
     private Builder() {
-      super(com.jxl.avro.User.SCHEMA$);
+      super(com.wangxi.avro.User.SCHEMA$);
     }
     
     /** Creates a Builder by copying an existing Builder */
-    private Builder(com.jxl.avro.User.Builder other) {
+    private Builder(com.wangxi.avro.User.Builder other) {
       super(other);
       if (isValidValue(fields()[0], other.name)) {
         this.name = data().deepCopy(fields()[0].schema(), other.name);
@@ -143,8 +143,8 @@ public class User extends org.apache.avro.specific.SpecificRecordBase implements
     }
     
     /** Creates a Builder by copying an existing User instance */
-    private Builder(com.jxl.avro.User other) {
-            super(com.jxl.avro.User.SCHEMA$);
+    private Builder(com.wangxi.avro.User other) {
+            super(com.wangxi.avro.User.SCHEMA$);
       if (isValidValue(fields()[0], other.name)) {
         this.name = data().deepCopy(fields()[0].schema(), other.name);
         fieldSetFlags()[0] = true;
@@ -165,7 +165,7 @@ public class User extends org.apache.avro.specific.SpecificRecordBase implements
     }
     
     /** Sets the value of the 'name' field */
-    public com.jxl.avro.User.Builder setName(java.lang.CharSequence value) {
+    public com.wangxi.avro.User.Builder setName(java.lang.CharSequence value) {
       validate(fields()[0], value);
       this.name = value;
       fieldSetFlags()[0] = true;
@@ -178,7 +178,7 @@ public class User extends org.apache.avro.specific.SpecificRecordBase implements
     }
     
     /** Clears the value of the 'name' field */
-    public com.jxl.avro.User.Builder clearName() {
+    public com.wangxi.avro.User.Builder clearName() {
       name = null;
       fieldSetFlags()[0] = false;
       return this;
@@ -190,7 +190,7 @@ public class User extends org.apache.avro.specific.SpecificRecordBase implements
     }
     
     /** Sets the value of the 'age' field */
-    public com.jxl.avro.User.Builder setAge(java.lang.Integer value) {
+    public com.wangxi.avro.User.Builder setAge(java.lang.Integer value) {
       validate(fields()[1], value);
       this.age = value;
       fieldSetFlags()[1] = true;
@@ -203,7 +203,7 @@ public class User extends org.apache.avro.specific.SpecificRecordBase implements
     }
     
     /** Clears the value of the 'age' field */
-    public com.jxl.avro.User.Builder clearAge() {
+    public com.wangxi.avro.User.Builder clearAge() {
       age = null;
       fieldSetFlags()[1] = false;
       return this;
@@ -215,7 +215,7 @@ public class User extends org.apache.avro.specific.SpecificRecordBase implements
     }
     
     /** Sets the value of the 'sex' field */
-    public com.jxl.avro.User.Builder setSex(java.lang.CharSequence value) {
+    public com.wangxi.avro.User.Builder setSex(java.lang.CharSequence value) {
       validate(fields()[2], value);
       this.sex = value;
       fieldSetFlags()[2] = true;
@@ -228,7 +228,7 @@ public class User extends org.apache.avro.specific.SpecificRecordBase implements
     }
     
     /** Clears the value of the 'sex' field */
-    public com.jxl.avro.User.Builder clearSex() {
+    public com.wangxi.avro.User.Builder clearSex() {
       sex = null;
       fieldSetFlags()[2] = false;
       return this;
