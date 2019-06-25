@@ -66,9 +66,10 @@ public class KafkaProducerTest {
      * 这种方式在可容忍丢失消息的情况下可以使用,生产一般不用
      */
     private void unSaveProducer() {
-        ProducerRecord<String, String> record = new ProducerRecord<String, String>("java_topic", "name", "melo");
+        ProducerRecord<String, String> record = new ProducerRecord<String, String>("java_topic", "name", "hello world!");
         try {
             producer.send(record);
+            producer.flush();
         } catch (Exception e) {
             e.printStackTrace();
             //尽管没有处理发送到kafka的异常但是别的异常也可能会发生比如
@@ -80,11 +81,11 @@ public class KafkaProducerTest {
      * 同步发送
      */
     private void synchronousProducer() {
-        ProducerRecord<String, String> record = new ProducerRecord<String, String>("java_topic", "name", "Rilley");
+        ProducerRecord<String, String> record = new ProducerRecord<>("java_topic", "name", "Rilley");
         try {
             Future<RecordMetadata> future = producer.send(record);
             future.get(); //wait for a reply from kafka,如果没有成功抛出异常,成功返回元信息
-            System.out.println(future.get());
+            System.out.println("返回结果：" + future.get());
             RecordMetadata recordMetadata = future.get();
             System.out.println(recordMetadata.offset());
         } catch (Exception e) {
@@ -100,8 +101,8 @@ public class KafkaProducerTest {
      * 异步发送要flush()
      */
     private void asynchronousProducer() {
-        ProducerRecord<String, String> record = new ProducerRecord<String, String>("java_topic", "name", "naomi");
-        producer.send(record, new ProducerCallback());
+        ProducerRecord<String, String> record = new ProducerRecord<String, String>("java_topic", "name", "wangxi");
+        producer.send(record, new ProducerCallback());  // 自定义回调类implements CallBack接口
         producer.flush();
     }
 
