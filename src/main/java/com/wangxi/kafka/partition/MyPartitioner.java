@@ -21,6 +21,7 @@ import java.util.Map;
  *  自定义partition
  */
 public class MyPartitioner implements Partitioner{
+    @Override
     public int partition(String topic, Object key, byte[] KeyBytes, Object value, byte[] ValueBytes, Cluster cluster) {
         List<PartitionInfo> partitionInfos = cluster.partitionsForTopic("java_topic");
         int numPartitions = partitionInfos.size();
@@ -34,11 +35,11 @@ public class MyPartitioner implements Partitioner{
         //other partition will get hashed to the rest of the partitions
         return (Math.abs(Utils.murmur2(KeyBytes)) % (numPartitions - 1));
     }
-
+    @Override
     public void close() {
 
     }
-
+    @Override
     public void configure(Map<String, ?> map) {
 
     }
