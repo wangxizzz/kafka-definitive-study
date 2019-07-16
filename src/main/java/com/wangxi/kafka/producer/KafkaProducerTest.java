@@ -88,6 +88,8 @@ public class KafkaProducerTest {
             System.out.println("返回结果：" + future.get());
             RecordMetadata recordMetadata = future.get();
             System.out.println(recordMetadata.offset());
+            System.out.println(recordMetadata.partition());//获取分区信息
+            System.out.println(recordMetadata.topic()); // 获取主题信息
         } catch (Exception e) {
             e.printStackTrace(); //其它异常
         }
