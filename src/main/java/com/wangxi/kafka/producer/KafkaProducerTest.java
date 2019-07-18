@@ -67,13 +67,17 @@ public class KafkaProducerTest {
      */
     private void unSaveProducer() {
         ProducerRecord<String, String> record = new ProducerRecord<String, String>("java_topic", "name", "hello world!");
-        try {
-            producer.send(record);
-            producer.flush();
-        } catch (Exception e) {
-            e.printStackTrace();
-            //尽管没有处理发送到kafka的异常但是别的异常也可能会发生比如
-            // SerializationException BufferExhaustedException TimeoutException InterruptException(发送线程被中断)
+        for (int i = 0; i < 100; i++) {
+            try {
+                producer.send(record);
+                record = new ProducerRecord<String, String>("java_topic", "name", "hello world--" + i);
+                System.out.println(record);
+                producer.flush();
+            } catch (Exception e) {
+                e.printStackTrace();
+                //尽管没有处理发送到kafka的异常但是别的异常也可能会发生比如
+                // SerializationException BufferExhaustedException TimeoutException InterruptException(发送线程被中断)
+            }
         }
     }
 
@@ -110,8 +114,8 @@ public class KafkaProducerTest {
 
     public static void main(String[] args) {
         KafkaProducerTest kafkaProducerTest = new KafkaProducerTest();
-//        kafkaProducerTest.unSaveProducer();
+        kafkaProducerTest.unSaveProducer();
 //        kafkaProducerTest.synchronousProducer();
-        kafkaProducerTest.asynchronousProducer();
+//        kafkaProducerTest.asynchronousProducer();
     }
 }

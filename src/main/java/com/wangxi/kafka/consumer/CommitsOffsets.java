@@ -45,7 +45,7 @@ public class CommitsOffsets {
             }
             try {
                 //会产生阻塞
-                ConsumerTest.kafkaConsumer.commitAsync();//处理完当前batch中的数据提交当前数据中最大的offset然后在获取新数据
+                ConsumerTest.kafkaConsumer.commitSync();//处理完当前batch中的数据提交当前数据中最大的offset然后在获取新数据
             } catch (CommitFailedException e) { //当发生可恢复的错误时 这个方法会retry
                 System.out.println("commit failed...");
             }
@@ -107,22 +107,23 @@ public class CommitsOffsets {
             }
         }
     }
+
     /**
      * commit specified offset
      * 提交最近的offset只允许你以完成batch处理的频率来提交,怎么能做到更快频率的提交呢？如果在处理过程中要提交offset以避免在长时间的处理过程
      * 中发生rebalance,commitSync()和commitAsync()都做不到,他们都是提交当批数据中最大的offsets
      * 幸运的是consumer API commitSync()和commitAsync()允许传一个map<partition, offset>
      */
-    public void commitSpecifiedOffset(){
+    public void commitSpecifiedOffset() {
         Map<TopicPartition, OffsetAndMetadata> currentOffsets = new HashMap<TopicPartition, OffsetAndMetadata>();//map track offsets
         int count = 0;
-        while (true){
+        while (true) {
             ConsumerRecords<String, String> records = ConsumerTest.kafkaConsumer.poll(100);
-            for(ConsumerRecord<String, String> record :records){
-                System.out.printf("topic=%s,partition=%s,offset=%d,key=%s,value=%s\n", record.topic(),record.partition(),record.offset(),record.key(),record.value());
-                currentOffsets.put(new TopicPartition(record.topic(),record.partition()),new OffsetAndMetadata(record.offset()+1,"no metadata"));
-                if (count%1000==0){
-                    ConsumerTest.kafkaConsumer.commitAsync(currentOffsets,null);
+            for (ConsumerRecord<String, String> record : records) {
+                System.out.printf("topic=%s,partition=%s,offset=%d,key=%s,value=%s\n", record.topic(), record.partition(), record.offset(), record.key(), record.value());
+                currentOffsets.put(new TopicPartition(record.topic(), record.partition()), new OffsetAndMetadata(record.offset() + 1, "no metadata"));
+                if (count % 1000 == 0) {
+                    ConsumerTest.kafkaConsumer.commitAsync(currentOffsets, null);
                 }
                 count++;
             }
