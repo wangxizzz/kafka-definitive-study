@@ -36,6 +36,8 @@ public class CustomerSerializer implements Serializer<Customer> {
                 return null;
             } else {
                 if (customer.getCustomerName() != null) {
+                    // 对于可变长度的变量，比如String类型，那么在序列化时，需要指定编码、长度
+                    // 在反序列化时才可以成功得到原值。
                     serializedName = customer.getCustomerName().getBytes("UTF-8");
                     stringSize = serializedName.length;
                 } else {
@@ -47,7 +49,7 @@ public class CustomerSerializer implements Serializer<Customer> {
             byteBuffer.putInt(customer.getCustomerID());
             byteBuffer.putInt(stringSize);
             byteBuffer.put(serializedName);
-            return byteBuffer.array();
+            return byteBuffer.array();  // 最终返回一串2进制数组
         } catch (Exception e) {
             throw new SerializationException("Error when serializing Customer to byte[]" + e);
         }
