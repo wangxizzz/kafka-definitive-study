@@ -68,9 +68,9 @@ public class ConsumerTest {
                 ConsumerRecords<String, String> consumerRecords = kafkaConsumer.poll(1000);//如果没有数据到consumer buffer 阻塞多久
                 //应该在别的线程处理消息
                 if (consumerRecords.count() == 0) {
+                    System.out.println("consumerRecords.count() = 0");
                     break;
                 }
-                System.out.println("====================================================" + consumerRecords.count());
                 for (ConsumerRecord<String, String> record : consumerRecords) {
                     // record.timestamp()表示消息的发送时间，而不是消息的接收时间
                     System.out.println("+++++++++++++++++++++++++++++++++++++++++topic=" + record.timestamp() + record.topic() + " partition=" + record.partition() + " offset=" + record.offset() + " key=" + record.key() + " value=" + record.value());
