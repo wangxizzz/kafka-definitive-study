@@ -26,15 +26,17 @@ public class RebalanceListener {
         public void onPartitionsAssigned(Collection<TopicPartition> partitions)
             在重新分配partition之后和开始消费之前调用
      */
-    public void partitionsRevoked(){
-        final Map<TopicPartition, OffsetAndMetadata> currentOffsets = new HashMap<TopicPartition, OffsetAndMetadata>();
-        try{
+    public void partitionsRevoked() {
+        final Map<TopicPartition, OffsetAndMetadata> currentOffsets = new HashMap<>();
+        try {
             ConsumerTest.kafkaConsumer.subscribe(Pattern.compile("java*"), new ConsumerRebalanceListener() {
+                @Override
                 public void onPartitionsRevoked(Collection<TopicPartition> collection) {
-                    System.out.println("Lost partitions in rebalance. Committing current offsets: "+currentOffsets);
+                    System.out.println("Lost partitions in rebalance. Committing current offsets: " + currentOffsets);
                     ConsumerTest.kafkaConsumer.commitSync(currentOffsets);
                 }
 
+                @Override
                 public void onPartitionsAssigned(Collection<TopicPartition> collection) {
 
                 }
@@ -47,14 +49,14 @@ public class RebalanceListener {
                 }
                 ConsumerTest.kafkaConsumer.commitAsync(currentOffsets, null);
             }
-        }catch (WakeupException e){
+        } catch (WakeupException e) {
             //ignore, going closing
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Unexpected error");
-        }finally {
-            try{
+        } finally {
+            try {
                 ConsumerTest.kafkaConsumer.commitSync(currentOffsets);
-            }finally {
+            } finally {
                 ConsumerTest.kafkaConsumer.close();
                 System.out.println("Closed consumer and we are done");
             }

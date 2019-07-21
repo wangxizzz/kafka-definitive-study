@@ -94,7 +94,7 @@ class SimpleMovingAvgNewConsumer {
 //                        System.out.println("Moving avg is: " + (sum / buffer.size()));
 //                    }
                 }
-                for (TopicPartition tp: movingAvg.consumer.assignment())
+                for (TopicPartition tp : movingAvg.consumer.assignment())
                     System.out.println("Committing offset at position:" + movingAvg.consumer.position(tp));
                 movingAvg.consumer.commitSync();
             }
@@ -107,11 +107,11 @@ class SimpleMovingAvgNewConsumer {
     }
 
     private void configure(String servers, String groupId) {
-        kafkaProps.put("group.id",groupId);
-        kafkaProps.put("bootstrap.servers",servers);
-        kafkaProps.put("auto.offset.reset","earliest");         // when in doubt, read everything
-        kafkaProps.put("key.deserializer","org.apache.kafka.common.serialization.StringDeserializer");
-        kafkaProps.put("value.deserializer","org.apache.kafka.common.serialization.StringDeserializer");
-        consumer = new KafkaConsumer<String, String>(kafkaProps);
+        kafkaProps.put("group.id", groupId);
+        kafkaProps.put("bootstrap.servers", servers);
+        kafkaProps.put("auto.offset.reset", "earliest");         // when in doubt, read everything
+        kafkaProps.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        kafkaProps.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        consumer = new KafkaConsumer<>(kafkaProps);
     }
 }
