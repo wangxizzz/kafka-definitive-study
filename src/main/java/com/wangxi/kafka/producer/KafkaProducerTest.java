@@ -1,6 +1,8 @@
 package com.wangxi.kafka.producer;
 
+import com.wangxi.kafka.interceptor.MyProducerInterceptor;
 import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 
@@ -22,6 +24,7 @@ public class KafkaProducerTest {
         InputStream inputStream = classLoader.getResourceAsStream("kafkaproducer.properties");
         try {
             properties.load(inputStream);
+            properties.put(ProducerConfig.INTERCEPTOR_CLASSES_CONFIG, MyProducerInterceptor.class.getName());
             producer = new KafkaProducer<>(properties);
         } catch (IOException e) {
             e.printStackTrace();
@@ -34,7 +37,7 @@ public class KafkaProducerTest {
      * 这种方式在可容忍丢失消息的情况下可以使用,生产一般不用
      */
     private void unSaveProducer() {
-        ProducerRecord<String, String> record = new ProducerRecord<String, String>("java_topic", "name", "hello world!");
+        ProducerRecord<String, String> record = new ProducerRecord<>("java_topic", "name", "hello world!");
         for (int i = 0; i < 100; i++) {
             try {
                 producer.send(record);
@@ -75,15 +78,15 @@ public class KafkaProducerTest {
      * 异步发送要flush()
      */
     private void asynchronousProducer() {
-        ProducerRecord<String, String> record = new ProducerRecord<String, String>("java_topic", "name", "wangxi");
+        ProducerRecord<String, String> record = new ProducerRecord<>("java_topic", "name", "wangxi");
         producer.send(record, new ProducerCallback());  // 自定义回调类implements CallBack接口
         producer.flush();
     }
 
     public static void main(String[] args) {
         KafkaProducerTest kafkaProducerTest = new KafkaProducerTest();
-        kafkaProducerTest.unSaveProducer();
+        //kafkaProducerTest.unSaveProducer();
 //        kafkaProducerTest.synchronousProducer();
-//        kafkaProducerTest.asynchronousProducer();
+        kafkaProducerTest.asynchronousProducer();
     }
 }
