@@ -15,7 +15,8 @@ import java.util.Map;
 
 /**
  *  key为空使用默认的partitioner round-robin
- *  key不为空对key hash得到partition的位置, key和partition的对应关系不会轻易的改变但是如果partition的数据增加了那么后面的key
+ *  key不为空对key hash得到partition的位置,
+ *  key和partition的对应关系不会轻易的改变但是如果partition的数据增加了那么后面的key
  *  对应的partition就会落在别的地方(所以partition的个数在最初就应该定下来,不要随便改)
  *
  *  自定义partition

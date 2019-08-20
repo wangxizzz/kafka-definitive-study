@@ -9,7 +9,7 @@ import org.apache.kafka.clients.producer.RecordMetadata;
 
 public class ProducerCallback implements Callback {
     public void onCompletion(RecordMetadata recordMetadata, Exception e) {
-        if (e!=null){
+        if (e != null) {
             e.printStackTrace(); //如果发生异常,那么e不为null
         }
         System.out.println(recordMetadata.offset());

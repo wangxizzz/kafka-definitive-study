@@ -4,6 +4,7 @@ import org.apache.kafka.common.serialization.Deserializer;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 /**
@@ -27,12 +28,7 @@ public class CustomerDeserializer implements Deserializer<Customer> {
         int customerNameLength = wrap.getInt();
         byte[] customerNameBytes = new byte[customerNameLength];
         wrap.get(customerNameBytes);
-        String customerName = "";
-        try {
-            customerName = new String(customerNameBytes, "utf-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        String customerName = new String(customerNameBytes, StandardCharsets.UTF_8);
         return new Customer(customerID, customerName);
     }
 
