@@ -17,7 +17,7 @@ import java.util.concurrent.ExecutionException;
  */
 @Slf4j
 public class ProducerTest01 {
-    public static final String brokerList = "192.168.1.110:9092";
+    public static final String brokerList = "localhost:9092";
     public static final String topic = "topic-demo";
     public static Properties props = null;
     // 多线程访问安全
@@ -39,16 +39,17 @@ public class ProducerTest01 {
     }
 
     @Test
-    public void testSyncSend() {
-        ProducerRecord<String, String> record = new ProducerRecord<>(topic, "hello kafka");
-        try {
-            RecordMetadata recordMetadata = producer.send(record).get();
-            System.out.println(recordMetadata.topic());
-            System.out.println(recordMetadata.partition());
-            System.out.println(recordMetadata.offset());
-        } catch (ExecutionException | InterruptedException e) {
-            // 进一步处理异常后的消息
-            log.error("同步发送消息失败", e);
+    public void testSyncSend() throws InterruptedException {
+        for (int i = 0; ; i++) {
+            ProducerRecord<String, String> record = new ProducerRecord<>(topic, "hello kafka : " + i);
+            try {
+                RecordMetadata recordMetadata = producer.send(record).get();
+                System.out.println(recordMetadata.topic() + ": " + recordMetadata.partition() + ": " + recordMetadata.offset());
+            } catch (ExecutionException | InterruptedException e) {
+                // 进一步处理异常后的消息
+                log.error("同步发送消息失败", e);
+            }
+            Thread.sleep(1000);
         }
     }
 

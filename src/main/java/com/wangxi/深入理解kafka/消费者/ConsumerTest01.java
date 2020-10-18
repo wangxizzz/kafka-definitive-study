@@ -7,7 +7,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.PartitionInfo;
 import org.apache.kafka.common.TopicPartition;
-import org.codehaus.jackson.map.deser.std.StringDeserializer;
+import org.apache.kafka.common.serialization.StringDeserializer;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,10 +26,10 @@ import java.util.regex.Pattern;
  */
 @Slf4j
 public class ConsumerTest01 {
-    public static final String brokerList = "192.168.1.110:9092";
+    public static final String brokerList = "localhost:9092";
     public static final String topic = "topic-demo";
     public static Properties props = null;
-    public static final String groupId = "group.demo";
+    public static final String groupId = "group.demo01";
     public static final AtomicBoolean isRunning = new AtomicBoolean(true);
 
     public static Properties initConfig() {
@@ -39,8 +39,10 @@ public class ConsumerTest01 {
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
         props.put(ConsumerConfig.CLIENT_ID_CONFIG, "consumer-demo01");
-        // 关闭自动提交
-        props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
+        // 打开自动提交
+        props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, true);
+//        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest");
         return props;
     }
 
@@ -56,15 +58,15 @@ public class ConsumerTest01 {
     public void test01 () {
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
         // 订阅某个主题
-        //consumer.subscribe(Arrays.asList(topic));
+        consumer.subscribe(Arrays.asList(topic));
         // 或者传入正则
-        consumer.subscribe(Pattern.compile("topic-.*"));
+//        consumer.subscribe(Pattern.compile("topic-.*"));
         try {
             while (isRunning.get()) {
                 ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(1000));
                 // 如果拉取的分区为空，那么会返回空集合
                 for (ConsumerRecord<String, String> record : records) {
-                    System.out.println(record.topic());
+                    System.out.println(record.topic() + "; " + record.offset());
                 }
             }
         } catch (Exception e) {

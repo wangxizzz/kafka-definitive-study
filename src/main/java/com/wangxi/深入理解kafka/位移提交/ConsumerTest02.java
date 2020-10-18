@@ -1,17 +1,25 @@
 package com.wangxi.深入理解kafka.位移提交;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.clients.consumer.*;
-import org.apache.kafka.common.PartitionInfo;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.clients.consumer.ConsumerRecords;
+import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.clients.consumer.OffsetAndMetadata;
+import org.apache.kafka.clients.consumer.OffsetCommitCallback;
 import org.apache.kafka.common.TopicPartition;
-import org.codehaus.jackson.map.deser.std.StringDeserializer;
+import org.apache.kafka.common.serialization.StringDeserializer;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.time.Duration;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.regex.Pattern;
 
 /**
  * <Description>
@@ -20,10 +28,10 @@ import java.util.regex.Pattern;
  */
 @Slf4j
 public class ConsumerTest02 {
-    public static final String brokerList = "192.168.1.110:9092";
+    public static final String brokerList = "localhost:9092";
     public static final String topic = "topic-demo";
     public static Properties props = null;
-    public static final String groupId = "group.demo";
+    public static final String groupId = "group.demo02";
     public static final AtomicBoolean isRunning = new AtomicBoolean(true);
 
     public static Properties initConfig() {
@@ -35,6 +43,8 @@ public class ConsumerTest02 {
         props.put(ConsumerConfig.CLIENT_ID_CONFIG, "consumer-demo02");
         // 关闭自动提交
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
+//        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest");
+                props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         return props;
     }
 
@@ -49,12 +59,15 @@ public class ConsumerTest02 {
     @Test
     public void test01() {
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
-        final int minBatchSize = 200;
+        // 订阅某个主题
+        consumer.subscribe(Arrays.asList(topic));
+        final int minBatchSize = 1;
         List<ConsumerRecord<String, String>> buffer = new ArrayList<>();
         try {
             while (isRunning.get()) {
                 ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(1000));
                 for (ConsumerRecord<String, String> record : records) {
+                    System.out.println(record.topic() + "; " + record.offset());
                     buffer.add(record);
                 }
                 if (buffer.size() >= minBatchSize) {
