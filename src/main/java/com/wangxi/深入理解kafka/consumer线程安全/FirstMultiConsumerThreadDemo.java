@@ -37,7 +37,13 @@ public class FirstMultiConsumerThreadDemo {
 
     public static void main(String[] args) {
         Properties props = initConfig();
-        // 起4个消费者线程，如果分区数少于4，那么会造成线程空闲的状态。
+        /**
+         *  起4个消费者线程(相当于起了4个消费者在同一个consumerGroup内)，如果分区数少于4，那么会造成线程空闲的状态。
+         *
+         *  这种 多线程的实现方式和开启多个消费进程的方式没有本质上的区别，它的优点是每个线程可以按顺序消费各个分区中的消息。
+         *  缺点也很明显，每个消费线程都要维护一个独立的TCP连接 。
+         */
+
         int consumerThreadNum = 4;
         for (int i = 0; i < consumerThreadNum; i++) {
             new KafkaConsumerThread(props, topic).start();
